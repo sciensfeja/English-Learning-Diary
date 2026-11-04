@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Dictionary</title>
+    <style>
+        :root {
+            --bg-gray: #F8F9FA;
+            --card-gray: #FFFFFF;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --pink-light: #FCE4EC;
+            --pink-accent: #F48FB1;
+            --purple-light: #F3E5F5;
+            --purple-accent: #BA68C8;
+            --border-color: #E0E0E0;
+            --success: #4CAF50;
+            --error: #F44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-gray);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--purple-accent);
+        }
+
+        .back-btn {
+            background-color: var(--purple-light);
+            color: var(--purple-accent);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid var(--purple-accent);
+        }
+
+        .back-btn:hover {
+            background-color: var(--purple-accent);
+            color: white;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        .stats-bar {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink-light) 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--purple-accent);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--card-gray);
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--purple-accent);
+            color: var(--purple-accent);
+        }
+
+        .tab-btn.active {
+            background-color: var(--purple-accent);
+            color: white;
+            border-color: var(--purple-accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* All Words Tab */
+        .words-container {
+            background: var(--card-gray);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-gray);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--pink-accent);
+            color: var(--pink-accent);
+        }
+
+        .filter-btn.active {
+            background-color: var(--pink-accent);
+            color: white;
+            border-color: var(--pink-accent);
+        }
+
+        .words-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .word-card {
+            background-color: var(--purple-light);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--purple-accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .word-card:hover {
+            background-color: var(--pink-light);
+            border-left-color: var(--pink-accent);
+            transform: translateX(3px);
+        }
+
+        .word-card.learned {
+            background-color: #E8F5E9;
+            border-left-color: var(--success);
+            opacity: 0.7;
+        }
+
+        .word-info {
+            flex: 1;
+        }
+
+        .word-english {
+            font-weight: 600;
+            color: var(--purple-accent);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .word-translation {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--purple-accent);
+            color: white;
+            border-color: var(--purple-accent);
+        }
+
+        .icon-btn.speak-btn:hover {
+            background-color: var(--pink-accent);
+            border-color: var(--pink-accent);
+        }
+
+        .icon-btn.learned-btn {
+            color: var(--success);
+        }
+
+        .icon-btn.learned-btn:hover {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        /* Study Tab */
+        .study-container {
+            background: var(--card-gray);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .study-card {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink-light) 100%);
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .study-word {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--purple-accent);
+            margin-bottom: 20px;
+        }
+
+        .study-translation {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            min-height: 40px;
+        }
+
+        .study-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .study-btn {
+            background-color: var(--purple-accent);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .study-btn:hover {
+            background-color: var(--pink-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 143, 177, 0.4);
+        }
+
+        .study-btn.secondary {
+            background-color: var(--bg-gray);
+            color: var(--purple-accent);
+            border: 2px solid var(--purple-accent);
+        }
+
+        .study-btn.secondary:hover {
+            background-color: var(--purple-light);
+        }
+
+        .study-btn.success {
+            background-color: var(--success);
+        }
+
+        .study-btn.success:hover {
+            background-color: #45a049;
+        }
+
+        /* Test Tab */
+        .test-container {
+            background: var(--card-gray);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .test-question {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink-light) 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .test-word {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+        }
+
+        .test-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .test-option {
+            background-color: var(--bg-gray);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            color: var(--text-main);
+        }
+
+        .test-option:hover:not(.disabled) {
+            border-color: var(--purple-accent);
+            background-color: var(--purple-light);
+            transform: translateY(-2px);
+        }
+
+        .test-option.correct {
+            background-color: #E8F5E9;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .test-option.incorrect {
+            background-color: #FFEBEE;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .test-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .test-feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .test-feedback.correct {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+
+        .test-feedback.incorrect {
+            background-color: #FFEBEE;
+            color: var(--error);
+        }
+
+        .no-words-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-words-message h3 {
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .reset-btn {
+            background-color: var(--pink-accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: var(--purple-accent);
+        }
+
+        @media (max-width: 768px) {
+            .study-word {
+                font-size: 2rem;
+            }
+
+            .test-word {
+                font-size: 1.8rem;
+            }
+
+            .test-options {
+                grid-template-columns: 1fr;
+            }
+
+            .words-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📚 Vocabulary Dictionary</h1>
+        <a href="index.html" class="back-btn">← Back to Diary</a>
+    </header>
+
+    <main>
+        <!-- Статистика -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number" id="totalWords">0</div>
+                <div class="stat-label">Total Words</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="learnedWords">0</div>
+                <div class="stat-label">Learned</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="remainingWords">0</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+        </div>
+
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="all">📖 All Words</button>
+            <button class="tab-btn" data-tab="study">🎓 Study</button>
+            <button class="tab-btn" data-tab="test">✍️ Test</button>
+        </div>
+
+        <!-- Вкладка: Все слова -->
+        <div class="tab-content active" id="all-tab">
+            <div class="words-container">
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="new">New</button>
+                    <button class="filter-btn" data-filter="learned">Learned</button>
+                </div>
+                <div class="words-list" id="wordsList"></div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Изучение -->
+        <div class="tab-content" id="study-tab">
+            <div class="study-container" id="studyContainer">
+                <div class="study-card">
+                    <div class="study-word" id="studyWord">Loading...</div>
+                    <button class="icon-btn speak-btn" onclick="speakWord(document.getElementById('studyWord').textContent)" style="margin: 20px auto;">🔊</button>
+                    <div class="study-translation" id="studyTranslation"></div>
+                </div>
+                <div class="study-controls">
+                    <button class="study-btn secondary" onclick="showTranslation()">Show Translation</button>
+                    <button class="study-btn success" onclick="markAsLearned()">✓ Mark as Learned</button>
+                    <button class="study-btn" onclick="nextStudyWord()">Next Word →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Тест -->
+        <div class="tab-content" id="test-tab">
+            <div class="test-container" id="testContainer">
+                <div class="test-question">
+                    <div class="test-word" id="testWord">Loading...</div>
+                    <button class="icon-btn speak-btn" onclick="speakWord(document.getElementById('testWord').textContent)" style="margin: 15px auto;">🔊</button>
+                </div>
+                <div class="test-options" id="testOptions"></div>
+                <div class="test-feedback" id="testFeedback" style="display: none;"></div>
+                <button class="study-btn" id="nextTestBtn" onclick="nextTestQuestion()" style="display: none;">Next Question →</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // База данных слов
+        const vocabulary = [
+            {word: "a / an", translation: "неопределенный артикль"},
+            {word: "about", translation: "о, около"},
+            {word: "absolute", translation: "абсолютный, полный"},
+            {word: "accommodation", translation: "жилье, размещение"},
+            {word: "act", translation: "действовать / действие"},
+            {word: "actions", translation: "действия"},
+            {word: "activities", translation: "виды деятельности, упражнения"},
+            {word: "activity", translation: "активность, задание"},
+            {word: "add", translation: "добавлять"},
+            {word: "adding", translation: "добавление"},
+            {word: "adjectives", translation: "прилагательные"},
+            {word: "affordable", translation: "доступный по цене"},
+            {word: "after", translation: "после"},
+            {word: "all", translation: "всё, все"},
+            {word: "also", translation: "также"},
+            {word: "always", translation: "всегда"},
+            {word: "am", translation: "являюсь (форма глагола to be)"},
+            {word: "ample", translation: "достаточный, обильный"},
+            {word: "and", translation: "и"},
+            {word: "another", translation: "другой, еще один"},
+            {word: "answer", translation: "отвечать / ответ"},
+            {word: "answering", translation: "ответы"},
+            {word: "any", translation: "любой, какой-нибудь"},
+            {word: "apartment", translation: "квартира"},
+            {word: "appropriate", translation: "подходящий, уместный"},
+            {word: "are", translation: "являются (форма глагола to be)"},
+            {word: "around", translation: "вокруг, рядом"},
+            {word: "as", translation: "как, в качестве"},
+            {word: "ask", translation: "спрашивать"},
+            {word: "asks", translation: "спрашивает"},
+            {word: "asking", translation: "расспрашивание, запрос"},
+            {word: "at", translation: "в, у, около"},
+            {word: "avoid", translation: "избегать"},
+            {word: "baby", translation: "ребенок, младенец"},
+            {word: "back", translation: "назад, обратно"},
+            {word: "bad", translation: "плохой"},
+            {word: "bag", translation: "сумка"},
+            {word: "bath", translation: "ванна"},
+            {word: "be", translation: "быть, являться"},
+            {word: "beautiful", translation: "красивый"},
+            {word: "because", translation: "потому что"},
+            {word: "before", translation: "перед, до"},
+            {word: "beginners", translation: "новички, начинающие"},
+            {word: "beginning", translation: "начало"},
+            {word: "behave", translation: "вести себя"},
+            {word: "below", translation: "ниже"},
+            {word: "believe", translation: "верить"},
+            {word: "beyond", translation: "за пределами, больше чем"},
+            {word: "bit", translation: "немного, чуть-чуть"},
+            {word: "blue", translation: "синий"},
+            {word: "body", translation: "тело"},
+            {word: "book", translation: "книга"},
+            {word: "borrow", translation: "брать взаймы"},
+            {word: "both", translation: "оба, и то и другое"},
+            {word: "bottle", translation: "бутылка"},
+            {word: "bring", translation: "приносить"},
+            {word: "broken", translation: "разбитый, сломанный"},
+            {word: "building", translation: "здание"},
+            {word: "bungalow", translation: "бунгало, одноэтажный дом"},
+            {word: "bus", translation: "автобус"},
+            {word: "but", translation: "но"},
+            {word: "buying", translation: "покупка, покупающий"},
+            {word: "by", translation: "у, около, к"},
+            {word: "calm", translation: "спокойный"},
+            {word: "can", translation: "мочь, уметь"},
+            {word: "carry", translation: "нести, переносить"},
+            {word: "centre", translation: "центр"},
+            {word: "cheerful", translation: "весёлый, бодрый"},
+            {word: "choices", translation: "выборы, варианты"},
+            {word: "choose", translation: "выбирать"},
+            {word: "city", translation: "город"},
+            {word: "clarification", translation: "прояснение, уточнение"},
+            {word: "class", translation: "класс, занятие"},
+            {word: "clean", translation: "чистый"},
+            {word: "clothes", translation: "одежда"},
+            {word: "code", translation: "код"},
+            {word: "cold", translation: "холодный"},
+            {word: "color", translation: "цвет"},
+            {word: "comfortable", translation: "комфортный, удобный"},
+            {word: "complete", translation: "завершать, заполнять"},
+            {word: "concern", translation: "беспокойство, тревога"},
+            {word: "construct", translation: "конструировать, строить"},
+            {word: "content", translation: "довольный, удовлетворенный"},
+            {word: "continue", translation: "продолжать"},
+            {word: "conversations", translation: "разговоры, беседы"},
+            {word: "cosy", translation: "уютный"},
+            {word: "could", translation: "мог, могла"},
+            {word: "day", translation: "день"},
+            {word: "decide", translation: "решать"},
+            {word: "decisions", translation: "решения"},
+            {word: "describe", translation: "описывать"},
+            {word: "describing", translation: "описание, описывающий"},
+            {word: "did", translation: "делал (прошедшее время от do)"},
+            {word: "different", translation: "различные, разные"},
+            {word: "dirty", translation: "грязный"},
+            {word: "disagreeing", translation: "выражение несогласия"},
+            {word: "do", translation: "делать"},
+            {word: "don't", translation: "не (сокращение от do not)"},
+            {word: "dress", translation: "платье"},
+            {word: "dress-code", translation: "дресс-код"},
+            {word: "during", translation: "во время, в течение"},
+            {word: "each", translation: "каждый"},
+            {word: "easy", translation: "легкий, просто"},
+            {word: "eat", translation: "есть, кушать"},
+            {word: "either", translation: "или, либо"},
+            {word: "empty", translation: "пустой"},
+            {word: "encourage", translation: "поощрять"},
+            {word: "ending", translation: "конец, завершение"},
+            {word: "english", translation: "английский"},
+            {word: "enjoy", translation: "наслаждаться"},
+            {word: "evening", translation: "вечер"},
+            {word: "every", translation: "каждый"},
+            {word: "everyday", translation: "ежедневный, повседневный"},
+            {word: "exam", translation: "экзамен"},
+            {word: "excited", translation: "взволнованный, возбужденный"},
+            {word: "exercise", translation: "упражнение"},
+            {word: "expect", translation: "ожидать"},
+            {word: "expensive", translation: "дорогой"},
+            {word: "experience", translation: "опыт, впечатления"},
+            {word: "extremely", translation: "чрезвычайно"},
+            {word: "favorite", translation: "любимый"},
+            {word: "father", translation: "отец"},
+            {word: "feel", translation: "чувствовать"},
+            {word: "feeling", translation: "чувство, самочувствие"},
+            {word: "filled", translation: "наполненный"},
+            {word: "find", translation: "находить"},
+            {word: "first", translation: "сначала, первый"},
+            {word: "finally", translation: "в конце концов, наконец"},
+            {word: "flashcards", translation: "карточки для изучения слов"},
+            {word: "floor", translation: "пол"},
+            {word: "food", translation: "еда"},
+            {word: "for", translation: "для, ради"},
+            {word: "forget", translation: "забывать"},
+            {word: "free", translation: "свободный"},
+            {word: "frequently", translation: "часто"},
+            {word: "friendly", translation: "дружелюбный"},
+            {word: "friends", translation: "друзья"},
+            {word: "from", translation: "из, от"},
+            {word: "general", translation: "общий"},
+            {word: "get", translation: "получать, становиться"},
+            {word: "give", translation: "давать"},
+            {word: "giving", translation: "предоставление, выражение"},
+            {word: "go", translation: "идти, ехать"},
+            {word: "going", translation: "идущий, собирающийся"},
+            {word: "good", translation: "хороший"},
+            {word: "gradually", translation: "постепенно"},
+            {word: "great", translation: "отличный, великолепный"},
+            {word: "habit", translation: "привычка"},
+            {word: "had", translation: "имел (прошедшее время от have)"},
+            {word: "hand", translation: "рука"},
+            {word: "happen", translation: "случаться, происходить"},
+            {word: "happens", translation: "случается"},
+            {word: "happy", translation: "счастливый"},
+            {word: "have", translation: "иметь"},
+            {word: "he", translation: "он"},
+            {word: "headache", translation: "головная боль"},
+            {word: "healthy", translation: "здоровый, полезный"},
+            {word: "hear", translation: "слышать"},
+            {word: "heart", translation: "сердце"},
+            {word: "her", translation: "её"},
+            {word: "here", translation: "здесь"},
+            {word: "high", translation: "высокий"},
+            {word: "hold", translation: "держать"},
+            {word: "homestay", translation: "проживание в семье"},
+            {word: "hospitality", translation: "гостеприимство"},
+            {word: "hostel", translation: "хостел"},
+            {word: "hosts", translation: "хозяева дома"},
+            {word: "hotel", translation: "отель, гостиница"},
+            {word: "how", translation: "как"},
+            {word: "I", translation: "я"},
+            {word: "ielts", translation: "международный экзамен по английскому языку"},
+            {word: "if", translation: "если"},
+            {word: "in", translation: "в"},
+            {word: "including", translation: "включая"},
+            {word: "instruct", translation: "обучать, инструктировать"},
+            {word: "instructs", translation: "обучает"},
+            {word: "interested", translation: "заинтересованный"},
+            {word: "interesting", translation: "интересный"},
+            {word: "intermediate", translation: "средний уровень"},
+            {word: "is", translation: "есть, является"},
+            {word: "island", translation: "остров"},
+            {word: "it", translation: "это, оно"},
+            {word: "its", translation: "его, её (для неодушевленных)"},
+            {word: "jog", translation: "бегать трусцой"},
+            {word: "just", translation: "просто, только что"},
+            {word: "keep", translation: "держать, сохранять"},
+            {word: "keys", translation: "ключи"},
+            {word: "kill", translation: "убивать"},
+            {word: "know", translation: "знать"},
+            {word: "landscape", translation: "пейзаж, ландшафт"},
+            {word: "language", translation: "язык"},
+            {word: "learning", translation: "изучение, обучение"},
+            {word: "learn", translation: "учить"},
+            {word: "lend", translation: "одолжить, давать взаймы"},
+            {word: "lesson", translation: "урок"},
+            {word: "let", translation: "позволять"},
+            {word: "list", translation: "список"},
+            {word: "located", translation: "расположенный"},
+            {word: "long", translation: "долгий, долго"},
+            {word: "look", translation: "смотреть, выглядеть"},
+            {word: "luxury", translation: "роскошный, люкс"},
+            {word: "made", translation: "сделанный"},
+            {word: "make", translation: "делать, создавать"},
+            {word: "makes", translation: "делает"},
+            {word: "main", translation: "главный, основной"},
+            {word: "man", translation: "мужчина"},
+            {word: "many", translation: "много"},
+            {word: "match", translation: "сопоставлять"},
+            {word: "me", translation: "мне, меня"},
+            {word: "meaning", translation: "значение"},
+            {word: "meanings", translation: "значения"},
+            {word: "meanwhile", translation: "между тем, тем временем"},
+            {word: "meet", translation: "встречаться"},
+            {word: "meeting", translation: "встреча"},
+            {word: "mind", translation: "разум, память"},
+            {word: "modern", translation: "современный"},
+            {word: "monday", translation: "понедельник"},
+            {word: "money", translation: "деньги"},
+            {word: "more", translation: "больше"},
+            {word: "morning", translation: "утро"},
+            {word: "motel", translation: "мотель"},
+            {word: "movies", translation: "фильмы"},
+            {word: "much", translation: "много"},
+            {word: "my", translation: "мой, моя"},
+            {word: "my teacher", translation: "мой учитель"},
+            {word: "name", translation: "имя"},
+            {word: "near", translation: "около, вблизи"},
+            {word: "need", translation: "нуждаться, нужно"},
+            {word: "needs", translation: "нуждается"},
+            {word: "nervous", translation: "нервный, взволнованный"},
+            {word: "new", translation: "новый"},
+            {word: "newspaper", translation: "газета"},
+            {word: "nice", translation: "приятный, хороший"},
+            {word: "no", translation: "нет"},
+            {word: "not", translation: "не"},
+            {word: "notebook", translation: "блокнот, тетрадь"},
+            {word: "of", translation: "из, о (предлог)"},
+            {word: "off", translation: "прочь, с"},
+            {word: "offered", translation: "предлагал, предлагала"},
+            {word: "office", translation: "офис"},
+            {word: "on", translation: "на"},
+            {word: "one", translation: "один"},
+            {word: "opinion", translation: "мнение"},
+            {word: "or", translation: "или"},
+            {word: "our", translation: "наш, наша"},
+            {word: "out", translation: "наружу, из"},
+            {word: "outside", translation: "снаружи, на улице"},
+            {word: "often", translation: "часто"},
+            {word: "page", translation: "страница"},
+            {word: "part", translation: "часть"},
+            {word: "particular", translation: "конкретный, особый"},
+            {word: "pen", translation: "ручка"},
+            {word: "people", translation: "люди"},
+            {word: "permanent", translation: "постоянный"},
+            {word: "philippines", translation: "Филиппины"},
+            {word: "phone", translation: "телефон"},
+            {word: "phrase", translation: "фраза"},
+            {word: "phrases", translation: "фразы"},
+            {word: "pick", translation: "выбирать, собирать"},
+            {word: "place", translation: "место"},
+            {word: "plan", translation: "план"},
+            {word: "pleasant", translation: "приятный"},
+            {word: "please", translation: "пожалуйста"},
+            {word: "politely", translation: "вежливо"},
+            {word: "positive", translation: "положительный, позитивный"},
+            {word: "possible", translation: "возможный"},
+            {word: "practice", translation: "практика, упражняться"},
+            {word: "prefer", translation: "предпочитать"},
+            {word: "pricey", translation: "дороговатый"},
+            {word: "pronunciation", translation: "произношение"},
+            {word: "push", translation: "толкать, подталкивать"},
+            {word: "qr", translation: "куар-код"},
+            {word: "question", translation: "вопрос"},
+            {word: "questions", translation: "вопросы"},
+            {word: "quite", translation: "довольно, вполне"},
+            {word: "read", translation: "читать"},
+            {word: "reading", translation: "чтение"},
+            {word: "reason", translation: "причина"},
+            {word: "record", translation: "записывать"},
+            {word: "relax", translation: "расслабляться"},
+            {word: "remember", translation: "помнить"},
+            {word: "repeat", translation: "повторять"},
+            {word: "represented", translation: "представлял"},
+            {word: "represent", translation: "представлять"},
+            {word: "return", translation: "возвращать"},
+            {word: "review", translation: "повторять, делать обзор"},
+            {word: "right", translation: "правильный, правый"},
+            {word: "rooms", translation: "комнаты"},
+            {word: "rundown", translation: "запущенный, ветхий"},
+            {word: "say", translation: "говорить"},
+            {word: "scan", translation: "сканировать"},
+            {word: "school", translation: "школа"},
+            {word: "section", translation: "раздел, секция"},
+            {word: "see", translation: "видеть"},
+            {word: "sentences", translation: "предложения"},
+            {word: "several", translation: "несколько"},
+            {word: "she", translation: "она"},
+            {word: "shirt", translation: "рубашка"},
+            {word: "short", translation: "короткий"},
+            {word: "showing", translation: "показ, выражение"},
+            {word: "similar", translation: "похожий, аналогичный"},
+            {word: "simple", translation: "простой"},
+            {word: "sit", translation: "сидеть"},
+            {word: "sitting", translation: "сидящий"},
+            {word: "smelly", translation: "вонючий, с неприятным запахом"},
+            {word: "smoking", translation: "курение"},
+            {word: "so", translation: "так, поэтому"},
+            {word: "some", translation: "некоторые, немного"},
+            {word: "someone", translation: "кто-то"},
+            {word: "something", translation: "что-то"},
+            {word: "sometimes", translation: "иногда"},
+            {word: "soon", translation: "скоро"},
+            {word: "spacious", translation: "просторный"},
+            {word: "speaking", translation: "говорение, разговорный"},
+            {word: "spotless", translation: "безупречно чистый"},
+            {word: "staff", translation: "персонал, сотрудники"},
+            {word: "start", translation: "начинать"},
+            {word: "starting", translation: "начало"},
+            {word: "stay", translation: "оставаться"},
+            {word: "stayed", translation: "оставался, останавливался"},
+            {word: "statements", translation: "утверждения"},
+            {word: "still", translation: "все еще"},
+            {word: "subject", translation: "предмет (учебный)"},
+            {word: "subjects", translation: "предметы"},
+            {word: "suit", translation: "костюм"},
+            {word: "swimming", translation: "плавание"},
+            {word: "take", translation: "брать"},
+            {word: "talk", translation: "говорить, разговаривать"},
+            {word: "teach", translation: "учить, обучать"},
+            {word: "teacher", translation: "учитель"},
+            {word: "teaching", translation: "преподавание, обучение"},
+            {word: "telling", translation: "рассказывание"},
+            {word: "temporarily", translation: "временно"},
+            {word: "tent", translation: "палатка"},
+            {word: "than", translation: "чем"},
+            {word: "thank", translation: "благодарить"},
+            {word: "thanks", translation: "спасибо"},
+            {word: "that", translation: "то, что"},
+            {word: "the", translation: "определенный артикль"},
+            {word: "their", translation: "их"},
+            {word: "them", translation: "их, ими"},
+            {word: "then", translation: "затем, тогда"},
+            {word: "there", translation: "там"},
+            {word: "these", translation: "эти"},
+            {word: "think", translation: "думать"},
+            {word: "thinking", translation: "размышление"},
+            {word: "things", translation: "вещи"},
+            {word: "this", translation: "это, этот"},
+            {word: "though", translation: "хотя"},
+            {word: "three", translation: "три"},
+            {word: "through", translation: "через"},
+            {word: "time", translation: "время"},
+            {word: "to", translation: "к, в (предлог или частица)"},
+            {word: "today", translation: "сегодня"},
+            {word: "tomorrow", translation: "завтра"},
+            {word: "travel", translation: "путешествие"},
+            {word: "travels", translation: "путешествия"},
+            {word: "treated", translation: "относились, принимали"},
+            {word: "try", translation: "пытаться, пробовать"},
+            {word: "truthful", translation: "правдивый"},
+            {word: "types", translation: "типы, виды"},
+            {word: "umbrella", translation: "зонт"},
+            {word: "unfurnished", translation: "без мебели"},
+            {word: "unhealthy", translation: "нездоровый, вредный"},
+            {word: "unique", translation: "уникальный"},
+            {word: "unit", translation: "раздел, глава"},
+            {word: "until", translation: "до тех пор пока"},
+            {word: "unusual", translation: "необычный"},
+            {word: "up", translation: "вверх"},
+            {word: "upset", translation: "расстроенный, огорченный"},
+            {word: "us", translation: "нам, нас"},
+            {word: "use", translation: "использовать"},
+            {word: "useful", translation: "полезный"},
+            {word: "usually", translation: "обычно"},
+            {word: "very", translation: "очень"},
+            {word: "videos", translation: "видео"},
+            {word: "view", translation: "вид"},
+            {word: "views", translation: "виды"},
+            {word: "villa", translation: "вилла"},
+            {word: "village", translation: "деревня"},
+            {word: "wait", translation: "ждать"},
+            {word: "walk", translation: "ходить, гулять"},
+            {word: "walked", translation: "гулял"},
+            {word: "want", translation: "хотеть"},
+            {word: "wanted", translation: "хотел"},
+            {word: "warm", translation: "теплый"},
+            {word: "was", translation: "был, была"},
+            {word: "watch", translation: "смотреть"},
+            {word: "watched", translation: "смотрел"},
+            {word: "water", translation: "вода"},
+            {word: "way", translation: "путь, способ"},
+            {word: "we", translation: "мы"},
+            {word: "weather", translation: "погода"},
+            {word: "week", translation: "неделя"},
+            {word: "well", translation: "хорошо"},
+            {word: "well-located", translation: "удачно расположенный"},
+            {word: "went", translation: "ходил, шел"},
+            {word: "what", translation: "что"},
+            {word: "when", translation: "когда"},
+            {word: "where", translation: "где"},
+            {word: "which", translation: "какой, который"},
+            {word: "who", translation: "кто, который"},
+            {word: "whose", translation: "чей"},
+            {word: "why", translation: "почему"},
+            {word: "window", translation: "окно"},
+            {word: "with", translation: "с"},
+            {word: "without", translation: "без"},
+            {word: "word", translation: "слово"},
+            {word: "words", translation: "слова"},
+            {word: "work", translation: "работать"},
+            {word: "worksheet", translation: "рабочий лист"},
+            {word: "worry", translation: "беспокойство, волнение"},
+            {word: "yesterday", translation: "вчера"},
+            {word: "you", translation: "ты, вы"},
+            {word: "your", translation: "твой, ваш"}
+        ];
+
+        // Загрузка выученных слов из localStorage
+        let learnedWords = JSON.parse(localStorage.getItem('learnedWords')) || [];
+        let currentStudyWord = null;
+        let currentTestWord = null;
+        let testOptions = [];
+        let currentFilter = 'all';
+
+        // Инициализация
+        function init() {
+            updateStats();
+            renderWordsList();
+            loadStudyWord();
+            loadTestQuestion();
+            setupEventListeners();
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            document.getElementById('totalWords').textContent = vocabulary.length;
+            document.getElementById('learnedWords').textContent = learnedWords.length;
+            document.getElementById('remainingWords').textContent = vocabulary.length - learnedWords.length;
+        }
+
+        // Рендер списка слов
+        function renderWordsList() {
+            const wordsList = document.getElementById('wordsList');
+            wordsList.innerHTML = '';
+
+            let filteredWords = vocabulary;
+            if (currentFilter === 'learned') {
+                filteredWords = vocabulary.filter(w => learnedWords.includes(w.word));
+            } else if (currentFilter === 'new') {
+                filteredWords = vocabulary.filter(w => !learnedWords.includes(w.word));
+            }
+
+            filteredWords.forEach(wordObj => {
+                const isLearned = learnedWords.includes(wordObj.word);
+                const card = document.createElement('div');
+                card.className = `word-card ${isLearned ? 'learned' : ''}`;
+                card.innerHTML = `
+                    <div class="word-info">
+                        <div class="word-english">${wordObj.word}</div>
+                        <div class="word-translation">${wordObj.translation}</div>
+                    </div>
+                    <div class="word-actions">
+                        <button class="icon-btn speak-btn" onclick="speakWord('${wordObj.word.replace(/'/g, "\\'")}')">🔊</button>
+                        <button class="icon-btn learned-btn" onclick="toggleLearned('${wordObj.word.replace(/'/g, "\\'")}')" title="${isLearned ? 'Unmark' : 'Mark as learned'}">
+                            ${isLearned ? '✓' : '○'}
+                        </button>
+                    </div>
+                `;
+                wordsList.appendChild(card);
+            });
+        }
+
+        // Переключение статуса "выучено"
+        function toggleLearned(word) {
+            const index = learnedWords.indexOf(word);
+            if (index > -1) {
+                learnedWords.splice(index, 1);
+            } else {
+                learnedWords.push(word);
+            }
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+            updateStats();
+            renderWordsList();
+        }
+
+        // Озвучивание слова
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Sorry, your browser does not support speech synthesis');
+            }
+        }
+
+        // Загрузка слова для изучения
+        function loadStudyWord() {
+            const remaining = vocabulary.filter(w => !learnedWords.includes(w.word));
+            if (remaining.length === 0) {
+                document.getElementById('studyContainer').innerHTML = `
+                    <div class="no-words-message">
+                        <h3>🎉 Congratulations!</h3>
+                        <p>You've learned all the words!</p>
+                        <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * remaining.length);
+            currentStudyWord = remaining[randomIndex];
+            
+            document.getElementById('studyWord').textContent = currentStudyWord.word;
+            document.getElementById('studyTranslation').textContent = '';
+        }
+
+        // Показать перевод
+        function showTranslation() {
+            if (currentStudyWord) {
+                document.getElementById('studyTranslation').textContent = currentStudyWord.translation;
+            }
+        }
+
+        // Отметить как выученное
+        function markAsLearned() {
+            if (currentStudyWord && !learnedWords.includes(currentStudyWord.word)) {
+                learnedWords.push(currentStudyWord.word);
+                localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                updateStats();
+                renderWordsList();
+            }
+            nextStudyWord();
+        }
+
+        // Следующее слово для изучения
+        function nextStudyWord() {
+            loadStudyWord();
+        }
+
+        // Загрузка вопроса для теста
+        function loadTestQuestion() {
+            const remaining = vocabulary.filter(w => !learnedWords.includes(w.word));
+            if (remaining.length === 0) {
+                document.getElementById('testContainer').innerHTML = `
+                    <div class="no-words-message">
+                        <h3>🎉 Congratulations!</h3>
+                        <p>You've learned all the words!</p>
+                        <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * remaining.length);
+            currentTestWord = remaining[randomIndex];
+            
+            document.getElementById('testWord').textContent = currentTestWord.word;
+            
+            // Генерация вариантов ответа
+            const wrongOptions = vocabulary
+                .filter(w => w.word !== currentTestWord.word)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(w => w.translation);
+            
+            testOptions = [currentTestWord.translation, ...wrongOptions].sort(() => Math.random() - 0.5);
+            
+            const optionsContainer = document.getElementById('testOptions');
+            optionsContainer.innerHTML = '';
+            testOptions.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'test-option';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(option, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('testFeedback').style.display = 'none';
+            document.getElementById('nextTestBtn').style.display = 'none';
+        }
+
+        // Проверка ответа
+        function checkAnswer(selected, btn) {
+            const options = document.querySelectorAll('.test-option');
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.textContent === currentTestWord.translation) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            const feedback = document.getElementById('testFeedback');
+            if (selected === currentTestWord.translation) {
+                btn.classList.add('correct');
+                feedback.className = 'test-feedback correct';
+                feedback.textContent = '✓ Correct!';
+            } else {
+                btn.classList.add('incorrect');
+                feedback.className = 'test-feedback incorrect';
+                feedback.textContent = `✗ Incorrect. The correct answer is: ${currentTestWord.translation}`;
+            }
+            feedback.style.display = 'block';
+            document.getElementById('nextTestBtn').style.display = 'inline-block';
+        }
+
+        // Следующий вопрос
+        function nextTestQuestion() {
+            loadTestQuestion();
+        }
+
+        // Сброс прогресса
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                learnedWords = [];
+                localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                location.reload();
+            }
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Вкладки
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(`${btn.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+
+            // Фильтры
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderWordsList();
+                });
+            });
+        }
+
+        // Запуск
+        init();
+    </script>
+</body>
+</html>
