@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3 - Past Continuous</title>
+    <style>
+        :root {
+            --bg-gray: #F8F9FA;
+            --card-gray: #FFFFFF;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --pink-light: #FCE4EC;
+            --pink-accent: #F48FB1;
+            --purple-light: #F3E5F5;
+            --purple-accent: #BA68C8;
+            --border-color: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-gray);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--purple-accent);
+        }
+
+        .back-btn {
+            background-color: var(--purple-light);
+            color: var(--purple-accent);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid var(--purple-accent);
+        }
+
+        .back-btn:hover {
+            background-color: var(--purple-accent);
+            color: white;
+        }
+
+        main {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink-light) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .lesson-title {
+            font-size: 2rem;
+            color: var(--purple-accent);
+            margin-bottom: 10px;
+        }
+
+        .lesson-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .content-section {
+            background: var(--card-gray);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--pink-light);
+        }
+
+        .explanation {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .rule-box {
+            background-color: var(--purple-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--purple-accent);
+        }
+
+        .rule-box strong {
+            color: var(--purple-accent);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .examples-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .examples-list li {
+            background-color: var(--pink-light);
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--pink-accent);
+        }
+
+        .examples-list li strong {
+            color: var(--purple-accent);
+        }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .verb-table th {
+            background-color: var(--purple-accent);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .verb-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .verb-table tr:nth-child(even) {
+            background-color: var(--bg-gray);
+        }
+
+        .verb-table tr:hover {
+            background-color: var(--pink-light);
+        }
+
+        .highlight {
+            background-color: #FFF9C4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .comparison-box {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--purple-light) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid var(--purple-accent);
+        }
+
+        .comparison-box h4 {
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .comparison-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .comparison-item h5 {
+            color: var(--pink-accent);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .practice-section {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--purple-light) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .practice-section h3 {
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .practice-btn {
+            background-color: var(--purple-accent);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .practice-btn:hover {
+            background-color: var(--pink-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 143, 177, 0.4);
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-title {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verb-table {
+                font-size: 0.9rem;
+            }
+
+            .verb-table th,
+            .verb-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📖 English Learning Diary</h1>
+        <a href="index.html" class="back-btn">← Back to Diary</a>
+    </header>
+
+    <main>
+        <div class="lesson-header">
+            <div class="lesson-date">Tuesday, November 3, 2026</div>
+            <h2 class="lesson-title">Past Continuous Tense</h2>
+            <p class="lesson-subtitle">Прошедшее длительное время</p>
+        </div>
+
+        <!-- Когда используется -->
+        <div class="content-section">
+            <h3 class="section-title">📌 When to use Past Continuous?</h3>
+            <p class="explanation">
+                Past Continuous используется для описания действий, которые <strong>продолжались в определенный момент в прошлом</strong>. 
+                Мы фокусируемся на процессе, а не на результате.
+            </p>
+            
+            <div class="rule-box">
+                <strong>Основные случаи использования:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Действие происходило в конкретный момент в прошлом (at 5 o'clock yesterday)</li>
+                    <li>Два действия происходили одновременно (while)</li>
+                    <li>Длительное действие было прервано другим действием (when)</li>
+                    <li>Описание фона/атмосферы в рассказе</li>
+                </ul>
+            </div>
+
+            <div class="rule-box">
+                <strong>Ключевые слова-маркеры:</strong>
+                while, when, at 5 o'clock yesterday, all day long, the whole evening, at that moment
+            </div>
+        </div>
+
+        <!-- Структура -->
+        <div class="content-section">
+            <h3 class="section-title">📝 Structure: was/were + Verb-ing</h3>
+            
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th> Auxiliary</th>
+                        <th>Main Verb</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>I / He / She / It</td>
+                        <td><strong>was</strong></td>
+                        <td>working / studying / running</td>
+                        <td>I was working.</td>
+                    </tr>
+                    <tr>
+                        <td>You / We / They</td>
+                        <td><strong>were</strong></td>
+                        <td>working / studying / running</td>
+                        <td>They were traveling.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="rule-box">
+                <strong>Формирование -ing:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Большинство глаголов: просто добавляем <span class="highlight">-ing</span> (work → working, travel → traveling)</li>
+                    <li>Глаголы на -e: убираем -e и добавляем <span class="highlight">-ing</span> (make → making, write → writing)</li>
+                    <li>Короткие глаголы с одной гласной + согласная: удваиваем последнюю согласную (run → running, sit → sitting)</li>
+                    <li>Глаголы на -ie: меняем на -y + ing (lie → lying, die → dying)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Утвердительные предложения -->
+        <div class="content-section">
+            <h3 class="section-title">✅ Affirmative Sentences</h3>
+            <p class="explanation">
+                <strong>Структура:</strong> Subject + was/were + Verb-ing + Object
+            </p>
+
+            <ul class="examples-list">
+                <li>I <strong>was studying</strong> English at 8 o'clock yesterday. — Я изучал английский в 8 часов вчера.</li>
+                <li>She <strong>was traveling</strong> to Thailand last week. — Она путешествовала в Таиланд на прошлой неделе.</li>
+                <li>We <strong>were programming</strong> all day long. — Мы программировали весь день.</li>
+                <li>He <strong>was running</strong> in the park this morning. — Он бегал в парке сегодня утром.</li>
+                <li>They <strong>were working</strong> remotely last month. — Они работали удаленно в прошлом месяце.</li>
+            </ul>
+        </div>
+
+        <!-- Отрицательные предложения -->
+        <div class="content-section">
+            <h3 class="section-title">❌ Negative Sentences</h3>
+            <p class="explanation">
+                <strong>Структура:</strong> Subject + was/were + <span class="highlight">not</span> + Verb-ing + Object
+            </p>
+            <p class="explanation">
+                Сокращения: was not = <strong>wasn't</strong>, were not = <strong>weren't</strong>
+            </p>
+
+            <ul class="examples-list">
+                <li>I <strong>wasn't studying</strong> at 8 o'clock. — Я не изучал (английский) в 8 часов.</li>
+                <li>She <strong>wasn't traveling</strong> last week. — Она не путешествовала на прошлой неделе.</li>
+                <li>We <strong>weren't programming</strong> all day. — Мы не программировали весь день.</li>
+                <li>He <strong>wasn't running</strong> this morning. — Он не бегал сегодня утром.</li>
+                <li>They <strong>weren't working</strong> remotely. — Они не работали удаленно.</li>
+            </ul>
+        </div>
+
+        <!-- Вопросы -->
+        <div class="content-section">
+            <h3 class="section-title">❓ Questions</h3>
+            <p class="explanation">
+                <strong>Общие вопросы:</strong> <span class="highlight">Was/Were</span> + Subject + Verb-ing + Object?
+            </p>
+
+            <ul class="examples-list">
+                <li><strong>Were you studying</strong> at 8 o'clock? — Ты изучал (английский) в 8 часов?<br>
+                    <em>Yes, I was. / No, I wasn't.</em></li>
+                <li><strong>Was she traveling</strong> last week? — Она путешествовала на прошлой неделе?<br>
+                    <em>Yes, she was. / No, she wasn't.</em></li>
+                <li><strong>Were they working</strong> remotely? — Они работали удаленно?<br>
+                    <em>Yes, they were. / No, they weren't.</em></li>
+            </ul>
+
+            <p class="explanation" style="margin-top: 20px;">
+                <strong>Специальные вопросы:</strong> Wh-word + was/were + Subject + Verb-ing?
+            </p>
+
+            <ul class="examples-list">
+                <li><strong>What were you doing</strong> at 5 o'clock? — Что ты делал в 5 часов?</li>
+                <li><strong>Where was she traveling</strong> last week? — Куда она путешествовала на прошлой неделе?</li>
+                <li><strong>Why were they working</strong> so late? — Почему они работали так поздно?</li>
+                <li><strong>Who was running</strong> in the park? — Кто бегал в парке?</li>
+            </ul>
+        </div>
+
+        <!-- Сравнение с Past Simple -->
+        <div class="content-section">
+            <h3 class="section-title">⚡ Past Simple vs Past Continuous</h3>
+            
+            <div class="comparison-box">
+                <h4>Когда использовать каждое время?</h4>
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h5>Past Simple</h5>
+                        <p><strong>Завершенное действие</strong> в прошлом</p>
+                        <p style="margin-top: 10px;"><em>I <strong>ran</strong> yesterday.</em><br>
+                        (Я пробежал — факт, действие завершено)</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h5>Past Continuous</h5>
+                        <p><strong>Процесс</strong> в определенный момент</p>
+                        <p style="margin-top: 10px;"><em>I <strong>was running</strong> at 7 am.</em><br>
+                        (Я был в процессе бега в 7 утра)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-box">
+                <strong>Два действия одновременно (while):</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Оба действия длительные → оба в Past Continuous<br>
+                        <em>While I <strong>was studying</strong>, my brother <strong>was playing</strong> games.</em></li>
+                    <li>Одно действие прерывает другое → прерванное в Past Continuous, прерывающее в Past Simple<br>
+                        <em>I <strong>was studying</strong> when the phone <strong>rang</strong>.</em><br>
+                        (Я изучал (процесс), когда зазвонил телефон — короткое действие)</li>
+                </ul>
+            </div>
+
+            <ul class="examples-list">
+                <li><strong>While</strong> I <strong>was programming</strong>, my friend <strong>was watching</strong> TV. — Пока я программировал, мой друг смотрел ТВ.</li>
+                <li>She <strong>was traveling</strong> to Thailand when she <strong>met</strong> her old friend. — Она путешествовала в Таиланд, когда встретила старого друга.</li>
+                <li>They <strong>were working</strong> remotely all day. — Они работали удаленно весь день.</li>
+                <li>He <strong>was running</strong> in the park when it <strong>started</strong> to rain. — Он бегал в парке, когда начался дождь.</li>
+            </ul>
+        </div>
+
+        <!-- Практика -->
+        <div class="practice-section">
+            <h3>💪 Practice Time!</h3>
+            <p>Попробуйте составить предложения о том, что вы делали вчера в это же время, используя Past Continuous.</p>
+            <button class="practice-btn" onclick="alert('Great! Remember: Subject + was/were + Verb-ing. Use while for two simultaneous actions, and when for an interrupting action!')">
+                Start Practice
+            </button>
+        </div>
+
+        <div class="footer-note">
+            <p>Lesson completed on November 3, 2026 | Keep practicing every day! 🚀</p>
+        </div>
+    </main>
+
+</body>
+</html>
