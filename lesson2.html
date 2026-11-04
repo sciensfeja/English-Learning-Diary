@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2 - Past Simple</title>
+    <style>
+        :root {
+            --bg-gray: #F8F9FA;
+            --card-gray: #FFFFFF;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --pink-light: #FCE4EC;
+            --pink-accent: #F48FB1;
+            --purple-light: #F3E5F5;
+            --purple-accent: #BA68C8;
+            --border-color: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Ненавязчивый верх */
+        header {
+            background-color: var(--card-gray);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--purple-accent);
+        }
+
+        .back-btn {
+            background-color: var(--purple-light);
+            color: var(--purple-accent);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid var(--purple-accent);
+        }
+
+        .back-btn:hover {
+            background-color: var(--purple-accent);
+            color: white;
+        }
+
+        /* Основной контент */
+        main {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink-light) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .lesson-title {
+            font-size: 2rem;
+            color: var(--purple-accent);
+            margin-bottom: 10px;
+        }
+
+        .lesson-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .content-section {
+            background: var(--card-gray);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--pink-light);
+        }
+
+        .explanation {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .rule-box {
+            background-color: var(--purple-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--purple-accent);
+        }
+
+        .rule-box strong {
+            color: var(--purple-accent);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .examples-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .examples-list li {
+            background-color: var(--pink-light);
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--pink-accent);
+        }
+
+        .examples-list li strong {
+            color: var(--purple-accent);
+        }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .verb-table th {
+            background-color: var(--purple-accent);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .verb-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .verb-table tr:nth-child(even) {
+            background-color: var(--bg-gray);
+        }
+
+        .verb-table tr:hover {
+            background-color: var(--pink-light);
+        }
+
+        .highlight {
+            background-color: #FFF9C4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .wh-words-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .wh-words-table th {
+            background-color: var(--pink-accent);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .wh-words-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .wh-words-table tr:nth-child(even) {
+            background-color: var(--bg-gray);
+        }
+
+        .practice-section {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--purple-light) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .practice-section h3 {
+            color: var(--purple-accent);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .practice-btn {
+            background-color: var(--purple-accent);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .practice-btn:hover {
+            background-color: var(--pink-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 143, 177, 0.4);
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .lesson-title {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .verb-table {
+                font-size: 0.9rem;
+            }
+
+            .verb-table th,
+            .verb-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📖 English Learning Diary</h1>
+        <a href="index.html" class="back-btn">← Back to Diary</a>
+    </header>
+
+    <main>
+        <!-- Заголовок урока -->
+        <div class="lesson-header">
+            <div class="lesson-date">Monday, November 2, 2026</div>
+            <h2 class="lesson-title">Past Simple Tense</h2>
+            <p class="lesson-subtitle">Простое прошедшее время</p>
+        </div>
+
+        <!-- Когда используется -->
+        <div class="content-section">
+            <h3 class="section-title">📌 When to use Past Simple?</h3>
+            <p class="explanation">
+                Past Simple используется для описания действий, которые произошли в прошлом и уже завершились. 
+                Мы знаем, <strong>когда</strong> это произошло (вчера, на прошлой неделе, в 2020 году и т.д.).
+            </p>
+            
+            <div class="rule-box">
+                <strong>Ключевые слова-маркеры:</strong>
+                yesterday, last week/month/year, ago, in 2020, when I was young, on Monday
+            </div>
+        </div>
+
+        <!-- Формы глаголов -->
+        <div class="content-section">
+            <h3 class="section-title">📝 Verb Forms</h3>
+            
+            <div class="rule-box">
+                <strong>Правильные глаголы (Regular verbs):</strong>
+                Добавляем окончание <span class="highlight">-ed</span> к инфинитиву
+            </div>
+
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Infinitive</th>
+                        <th>Past Simple</th>
+                        <th>Translation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>work</td>
+                        <td>worked</td>
+                        <td>работал(а)</td>
+                    </tr>
+                    <tr>
+                        <td>play</td>
+                        <td>played</td>
+                        <td>играл(а)</td>
+                    </tr>
+                    <tr>
+                        <td>study</td>
+                        <td>studied</td>
+                        <td>учился/училась</td>
+                    </tr>
+                    <tr>
+                        <td>travel</td>
+                        <td>traveled</td>
+                        <td>путешествовал(а)</td>
+                    </tr>
+                    <tr>
+                        <td>program</td>
+                        <td>programmed</td>
+                        <td>программировал(а)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="rule-box">
+                <strong>Неправильные глаголы (Irregular verbs):</strong>
+                Имеют особую форму, которую нужно запомнить
+            </div>
+
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Infinitive</th>
+                        <th>Past Simple</th>
+                        <th>Translation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>go</td>
+                        <td>went</td>
+                        <td>ходил(а), ездил(а)</td>
+                    </tr>
+                    <tr>
+                        <td>see</td>
+                        <td>saw</td>
+                        <td>видел(а)</td>
+                    </tr>
+                    <tr>
+                        <td>eat</td>
+                        <td>ate</td>
+                        <td>ел(а)</td>
+                    </tr>
+                    <tr>
+                        <td>buy</td>
+                        <td>bought</td>
+                        <td>покупал(а)</td>
+                    </tr>
+                    <tr>
+                        <td>run</td>
+                        <td>ran</td>
+                        <td>бегал(а)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Утвердительные предложения -->
+        <div class="content-section">
+            <h3 class="section-title">✅ Affirmative Sentences</h3>
+            <p class="explanation">
+                <strong>Структура:</strong> Subject + Verb (Past Simple) + Object
+            </p>
+
+            <ul class="examples-list">
+                <li><strong>I worked</strong> yesterday. — Я работал вчера.</li>
+                <li><strong>She traveled</strong> to Thailand last month. — Она путешествовала в Таиланд в прошлом месяце.</li>
+                <li><strong>We studied</strong> English last week. — Мы изучали английский на прошлой неделе.</li>
+                <li><strong>He ran</strong> in the park this morning. — Он бегал в парке сегодня утром.</li>
+                <li><strong>They bought</strong> a new computer last year. — Они купили новый компьютер в прошлом году.</li>
+            </ul>
+        </div>
+
+        <!-- Отрицательные предложения -->
+        <div class="content-section">
+            <h3 class="section-title">❌ Negative Sentences</h3>
+            <p class="explanation">
+                <strong>Структура:</strong> Subject + <span class="highlight">did not (didn't)</span> + Verb (infinitive) + Object
+            </p>
+            <p class="explanation">
+                ⚠️ <strong>Важно:</strong> В отрицании глагол стоит в начальной форме (без -ed)!
+            </p>
+
+            <ul class="examples-list">
+                <li>I <strong>didn't work</strong> yesterday. — Я не работал вчера.</li>
+                <li>She <strong>didn't travel</strong> last month. — Она не путешествовала в прошлом месяце.</li>
+                <li>We <strong>didn't study</strong> English last week. — Мы не изучали английский на прошлой неделе.</li>
+                <li>He <strong>didn't run</strong> this morning. — Он не бегал сегодня утром.</li>
+                <li>They <strong>didn't buy</strong> a new computer. — Они не покупали новый компьютер.</li>
+            </ul>
+        </div>
+
+        <!-- Вопросы -->
+        <div class="content-section">
+            <h3 class="section-title">❓ Yes/No Questions</h3>
+            <p class="explanation">
+                <strong>Структура:</strong> <span class="highlight">Did</span> + Subject + Verb (infinitive) + Object?
+            </p>
+            <p class="explanation">
+                ⚠️ <strong>Важно:</strong> В вопросах тоже используем начальную форму глагола!
+            </p>
+
+            <ul class="examples-list">
+                <li><strong>Did you work</strong> yesterday? — Ты работал вчера?</li>
+                <li><strong>Did she travel</strong> to Thailand? — Она путешествовала в Таиланд?</li>
+                <li><strong>Did they study</strong> English last week? — Они изучали английский на прошлой неделе?</li>
+                <li><strong>Did he run</strong> this morning? — Он бегал сегодня утром?</li>
+                <li><strong>Did you buy</strong> a new computer? — Ты купил новый компьютер?</li>
+            </ul>
+
+            <div class="rule-box">
+                <strong>Краткие ответы:</strong><br>
+                Yes, I did. / No, I didn't.<br>
+                Yes, she did. / No, she didn't.
+            </div>
+        </div>
+
+        <!-- Специальные вопросы (Wh-questions) -->
+        <div class="content-section">
+            <h3 class="section-title">🔍 Wh-Questions (Специальные вопросы)</h3>
+            <p class="explanation">
+                Специальные вопросы начинаются с вопросительных слов и требуют полного ответа, а не просто "да/нет".
+            </p>
+
+            <div class="rule-box">
+                <strong>Структура:</strong> <span class="highlight">Wh-word</span> + did + Subject + Verb (infinitive) + Object?
+            </div>
+
+            <table class="wh-words-table">
+                <thead>
+                    <tr>
+                        <th>Question Word</th>
+                        <th>Translation</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>What</strong></td>
+                        <td>Что</td>
+                        <td>Спрашиваем о действии или предмете</td>
+                    </tr>
+                    <tr>
+                        <td><strong>When</strong></td>
+                        <td>Когда</td>
+                        <td>Спрашиваем о времени</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Where</strong></td>
+                        <td>Где/Куда</td>
+                        <td>Спрашиваем о месте</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Why</strong></td>
+                        <td>Почему</td>
+                        <td>Спрашиваем о причине</td>
+                    </tr>
+                    <tr>
+                        <td><strong>How</strong></td>
+                        <td>Как</td>
+                        <td>Спрашиваем о способе</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Who</strong></td>
+                        <td>Кто</td>
+                        <td>Спрашиваем о человеке</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="examples-list">
+                <li><strong>What did you do</strong> yesterday? — Что ты делал вчера?<br>
+                    <em>I studied English.</em></li>
+                <li><strong>When did she travel</strong> to Thailand? — Когда она путешествовала в Таиланд?<br>
+                    <em>She traveled last month.</em></li>
+                <li><strong>Where did they go</strong> last weekend? — Куда они ходили на прошлых выходных?<br>
+                    <em>They went to the cinema.</em></li>
+                <li><strong>Why did he run</strong> so fast? — Почему он бежал так быстро?<br>
+                    <em>Because he was late.</em></li>
+                <li><strong>How did you learn</strong> programming? — Как ты выучил программирование?<br>
+                    <em>I watched online courses.</em></li>
+                <li><strong>Who did you meet</strong> at the conference? — Кого ты встретил на конференции?<br>
+                    <em>I met many interesting people.</em></li>
+            </ul>
+
+            <div class="rule-box">
+                <strong>⚠️ Особый случай с "Who":</strong><br>
+                Когда <strong>Who</strong> является подлежащим (спрашиваем "кто сделал?"), структура меняется:<br>
+                <span class="highlight">Who + Verb (Past Simple) + Object?</span><br><br>
+                <strong>Примеры:</strong><br>
+                • <strong>Who wrote</strong> this code? — Кто написал этот код?<br>
+                • <strong>Who traveled</strong> to Thailand? — Кто путешествовал в Таиланд?<br>
+                • <strong>Who ran</strong> in the marathon? — Кто бежал в марафоне?
+            </div>
+        </div>
+
+        <!-- Глагол "to be" -->
+        <div class="content-section">
+            <h3 class="section-title">🌟 Special Case: Verb "to be"</h3>
+            <p class="explanation">
+                Глагол <strong>to be</strong> имеет особые формы в Past Simple:
+            </p>
+
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Past Simple</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>I / He / She / It</td>
+                        <td><strong>was</strong></td>
+                        <td>I was at home yesterday.</td>
+                    </tr>
+                    <tr>
+                        <td>You / We / They</td>
+                        <td><strong>were</strong></td>
+                        <td>They were in Thailand last month.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="examples-list">
+                <li>I <strong>was</strong> a teacher 20 years ago. — Я был учителем 20 лет назад.</li>
+                <li>She <strong>wasn't</strong> (was not) at school yesterday. — Её не было в школе вчера.</li>
+                <li><strong>Were</strong> you in Thailand? — Ты был в Таиланде?</li>
+                <li>They <strong>were</strong> happy. — Они были счастливы.</li>
+            </ul>
+        </div>
+
+        <!-- Практика -->
+        <div class="practice-section">
+            <h3>💪 Practice Time!</h3>
+            <p>Попробуйте составить 5 вопросов о том, что вы делали на прошлой неделе, используя Wh-words.</p>
+            <button class="practice-btn" onclick="alert('Great! Remember: Wh-word + did + subject + verb (infinitive)?')">
+                Start Practice
+            </button>
+        </div>
+
+        <div class="footer-note">
+            <p>Lesson completed on November 2, 2026 | Keep practicing every day! 🚀</p>
+        </div>
+    </main>
+
+</body>
+</html>
