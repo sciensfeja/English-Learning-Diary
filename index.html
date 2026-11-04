@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Learning Diary</title>
     <style>
-        /* --- ПЕРЕМЕННЫЕ И БАЗОВЫЕ СТИЛИ --- */
         :root {
             --bg-gray: #F8F9FA;
             --card-gray: #FFFFFF;
@@ -34,7 +33,6 @@
             min-height: 100vh;
         }
 
-        /* --- НЕНАВЯЗЧИВЫЙ ВЕРХНИЙ ИНТЕРФЕЙС --- */
         header {
             background-color: var(--card-gray);
             padding: 15px 30px;
@@ -55,7 +53,6 @@
             color: var(--text-secondary);
         }
 
-        /* --- ОСНОВНОЙ КОНТЕНТ (СЕТКА) --- */
         main {
             flex: 1;
             display: grid;
@@ -83,7 +80,6 @@
             color: var(--text-main);
         }
 
-        /* --- ЛЕВАЯ ЧАСТЬ: ТЕМЫ УРОКОВ --- */
         .lessons-list {
             list-style: none;
             display: flex;
@@ -116,6 +112,18 @@
             color: var(--text-secondary);
         }
 
+        /* Новая метка "доступен урок" */
+        .lesson-item.has-page {
+            border-left-color: var(--pink-accent);
+            position: relative;
+        }
+
+        .lesson-item.has-page::after {
+            content: '📖';
+            margin-left: 8px;
+            font-size: 1.1rem;
+        }
+
         .lesson-title {
             font-weight: 500;
         }
@@ -128,7 +136,6 @@
             color: var(--text-secondary);
         }
 
-        /* --- ПРАВАЯ ЧАСТЬ: КАЛЕНДАРЬ --- */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -150,11 +157,11 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             transition: background 0.2s;
+            cursor: pointer;
         }
 
         .day-cell:hover {
             background-color: var(--pink-light);
-            cursor: pointer;
         }
 
         .day-cell.today {
@@ -164,12 +171,24 @@
             box-shadow: 0 2px 4px rgba(244, 143, 177, 0.4);
         }
 
+        /* Новый стиль для дня с уроком */
+        .day-cell.has-lesson {
+            background-color: var(--purple-light);
+            color: var(--purple-accent);
+            font-weight: 600;
+            border: 1px dashed var(--purple-accent);
+        }
+
+        .day-cell.has-lesson:hover {
+            background-color: var(--purple-accent);
+            color: white;
+        }
+
         .day-cell.empty {
             background: transparent;
             cursor: default;
         }
 
-        /* --- НИЖНЯЯ ЧАСТЬ: СЛОВАРЬ --- */
         footer {
             background-color: var(--card-gray);
             padding: 20px;
@@ -192,7 +211,6 @@
             background-color: var(--pink-accent);
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ УРОКА) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -220,7 +238,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        /* ОЧЕНЬ ЗАМЕТНАЯ КНОПКА ЗАКРЫТИЯ */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -250,12 +267,26 @@
         .modal-title {
             color: var(--purple-accent);
             margin-bottom: 15px;
-            padding-right: 40px; /* Чтобы текст не залезал под кнопку */
+            padding-right: 40px;
         }
 
         .modal-text {
             color: var(--text-secondary);
             margin-bottom: 20px;
+        }
+
+        .modal-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        /* Кнопки в модальном окне */
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .mark-done-btn {
@@ -267,13 +298,34 @@
             cursor: pointer;
             font-size: 1rem;
             width: 100%;
+            transition: background 0.2s;
         }
 
         .mark-done-btn:hover {
             background-color: var(--purple-accent);
         }
 
-        /* --- АДАПТИВНОСТЬ --- */
+        /* Новая кнопка "Открыть урок" */
+        .open-lesson-btn {
+            background-color: var(--purple-accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+
+        .open-lesson-btn:hover {
+            background-color: var(--pink-accent);
+        }
+
         @media (max-width: 768px) {
             main {
                 grid-template-columns: 1fr;
@@ -283,46 +335,46 @@
 </head>
 <body>
 
-    <!-- Ненавязчивый верх -->
     <header>
         <h1>📖 English Learning Diary</h1>
         <div class="date-info">Wednesday, November 04, 2026</div>
     </header>
 
-    <!-- Основной контент -->
     <main>
-        <!-- Левая часть: Темы -->
         <section class="panel">
             <h2 class="panel-title">Lesson Topics</h2>
             <ul class="lessons-list" id="lessonsList">
-                <li class="lesson-item" data-id="1" data-desc="Vocabulary for airports, hotels, and asking for directions. Useful for your travels!">
-                    <span class="lesson-title">1. Travel & Airports</span>
+                <!-- Урок 2 ноября с пометкой "has-page" и ссылкой -->
+                <li class="lesson-item has-page" 
+                    data-id="1" 
+                    data-date="Monday, November 2, 2026"
+                    data-page="lesson2.html"
+                    data-desc="Past Simple Tense — простое прошедшее время. Когда использовать, формы глаголов, утверждения, отрицания, вопросы (Did...?) и специальные вопросы (What, When, Where, Why, How, Who).">
+                    <span class="lesson-title">1. Past Simple (2 Nov)</span>
                     <span class="lesson-status">To do</span>
                 </li>
-                <li class="lesson-item" data-id="2" data-desc="Phrasal verbs and vocabulary for daily routines, jogging, and healthy habits.">
+                <li class="lesson-item" data-id="2" data-date="" data-page="" data-desc="Phrasal verbs and vocabulary for daily routines, jogging, and healthy habits.">
                     <span class="lesson-title">2. Healthy Lifestyle & Routines</span>
                     <span class="lesson-status">To do</span>
                 </li>
-                <li class="lesson-item" data-id="3" data-desc="Terms related to web development, algorithms, and writing clean code.">
+                <li class="lesson-item" data-id="3" data-date="" data-page="" data-desc="Terms related to web development, algorithms, and writing clean code.">
                     <span class="lesson-title">3. Programming & IT Basics</span>
                     <span class="lesson-status">To do</span>
                 </li>
-                <li class="lesson-item" data-id="4" data-desc="How to describe sensors, microcontrollers, and automated systems in English.">
+                <li class="lesson-item" data-id="4" data-date="" data-page="" data-desc="How to describe sensors, microcontrollers, and automated systems in English.">
                     <span class="lesson-title">4. Robotics & Hardware</span>
                     <span class="lesson-status">To do</span>
                 </li>
-                <li class="lesson-item" data-id="5" data-desc="Business English for remote teams, asynchronous communication, and freelancing.">
+                <li class="lesson-item" data-id="5" data-date="" data-page="" data-desc="Business English for remote teams, asynchronous communication, and freelancing.">
                     <span class="lesson-title">5. Remote Work & Digital Nomad</span>
                     <span class="lesson-status">To do</span>
                 </li>
             </ul>
         </section>
 
-        <!-- Правая часть: Календарь -->
         <section class="panel">
             <h2 class="panel-title">November Calendar</h2>
             <div class="calendar-grid">
-                <!-- Дни недели -->
                 <div class="day-header">Mo</div>
                 <div class="day-header">Tu</div>
                 <div class="day-header">We</div>
@@ -331,10 +383,10 @@
                 <div class="day-header">Sa</div>
                 <div class="day-header">Su</div>
 
-                <!-- Даты (Начинаем с Пн 2.11) -->
-                <div class="day-cell">2</div>
+                <!-- 2 ноября помечено как день с уроком -->
+                <div class="day-cell has-lesson" data-lesson="lesson2.html">2</div>
                 <div class="day-cell">3</div>
-                <div class="day-cell today">4</div> <!-- Сегодняшний день -->
+                <div class="day-cell today">4</div>
                 <div class="day-cell">5</div>
                 <div class="day-cell">6</div>
                 <div class="day-cell">7</div>
@@ -369,32 +421,37 @@
         </section>
     </main>
 
-    <!-- Нижняя часть: Ссылка на словарь -->
     <footer>
         <a href="https://dictionary.cambridge.org/dictionary/english-russian" target="_blank" class="dictionary-link">
             📚 Open Cambridge Dictionary
         </a>
     </footer>
 
-    <!-- Модальное окно для деталей урока -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
-            <!-- Крупная и заметная кнопка закрытия -->
             <button class="close-btn" id="closeModalBtn">&times;</button>
+            <div class="modal-date" id="modalDate"></div>
             <h3 class="modal-title" id="modalTitle">Lesson Details</h3>
             <p class="modal-text" id="modalText">Description goes here...</p>
-            <button class="mark-done-btn" id="markDoneBtn">Mark as Completed ✓</button>
+            <div class="modal-buttons">
+                <!-- Новая кнопка "Открыть урок" (появляется только если есть страница) -->
+                <a href="#" class="open-lesson-btn" id="openLessonBtn" style="display: none;">
+                    📖 Open Lesson Page
+                </a>
+                <button class="mark-done-btn" id="markDoneBtn">Mark as Completed ✓</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Элементы DOM
         const lessonsList = document.getElementById('lessonsList');
         const modalOverlay = document.getElementById('modalOverlay');
+        const modalDate = document.getElementById('modalDate');
         const modalTitle = document.getElementById('modalTitle');
         const modalText = document.getElementById('modalText');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const markDoneBtn = document.getElementById('markDoneBtn');
+        const openLessonBtn = document.getElementById('openLessonBtn');
         
         let currentLessonId = null;
 
@@ -404,10 +461,28 @@
             if (!lessonItem) return;
 
             currentLessonId = lessonItem.dataset.id;
+            const lessonDate = lessonItem.dataset.date;
+            const lessonPage = lessonItem.dataset.page;
+            
+            // Показываем дату, если она есть
+            if (lessonDate) {
+                modalDate.textContent = '📅 ' + lessonDate;
+                modalDate.style.display = 'block';
+            } else {
+                modalDate.style.display = 'none';
+            }
+
             modalTitle.textContent = lessonItem.querySelector('.lesson-title').textContent;
             modalText.textContent = lessonItem.dataset.desc;
             
-            // Меняем текст кнопки, если урок уже пройден
+            // Показываем/скрываем кнопку "Открыть урок"
+            if (lessonPage) {
+                openLessonBtn.href = lessonPage;
+                openLessonBtn.style.display = 'block';
+            } else {
+                openLessonBtn.style.display = 'none';
+            }
+            
             if (lessonItem.classList.contains('completed')) {
                 markDoneBtn.textContent = 'Mark as Incomplete ↺';
                 markDoneBtn.style.backgroundColor = '#9E9E9E';
@@ -419,19 +494,16 @@
             modalOverlay.classList.add('active');
         });
 
-        // Закрытие модального окна (Кнопка)
         closeModalBtn.addEventListener('click', () => {
             modalOverlay.classList.remove('active');
         });
 
-        // Закрытие модального окна (Клик по фону)
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
                 modalOverlay.classList.remove('active');
             }
         });
 
-        // Отметка урока как выполненного
         markDoneBtn.addEventListener('click', () => {
             const lessonItem = document.querySelector(`.lesson-item[data-id="${currentLessonId}"]`);
             const statusSpan = lessonItem.querySelector('.lesson-status');
@@ -447,9 +519,15 @@
             modalOverlay.classList.remove('active');
         });
 
-        // Интерактивность календаря (можно добавить заметки на дни)
+        // Интерактивность календаря
         document.querySelectorAll('.day-cell:not(.empty)').forEach(cell => {
             cell.addEventListener('click', () => {
+                // Если у дня есть урок — переходим на него
+                if (cell.dataset.lesson) {
+                    window.location.href = cell.dataset.lesson;
+                    return;
+                }
+                
                 if (cell.classList.contains('today')) {
                     alert("Today's goal: Review 10 new words and practice speaking!");
                 } else {
