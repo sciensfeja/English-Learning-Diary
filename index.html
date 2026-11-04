@@ -112,7 +112,6 @@
             color: var(--text-secondary);
         }
 
-        /* Новая метка "доступен урок" */
         .lesson-item.has-page {
             border-left-color: var(--pink-accent);
             position: relative;
@@ -171,7 +170,6 @@
             box-shadow: 0 2px 4px rgba(244, 143, 177, 0.4);
         }
 
-        /* Новый стиль для дня с уроком */
         .day-cell.has-lesson {
             background-color: var(--purple-light);
             color: var(--purple-accent);
@@ -282,7 +280,6 @@
             font-style: italic;
         }
 
-        /* Кнопки в модальном окне */
         .modal-buttons {
             display: flex;
             flex-direction: column;
@@ -305,7 +302,6 @@
             background-color: var(--purple-accent);
         }
 
-        /* Новая кнопка "Открыть урок" */
         .open-lesson-btn {
             background-color: var(--purple-accent);
             color: white;
@@ -344,7 +340,6 @@
         <section class="panel">
             <h2 class="panel-title">Lesson Topics</h2>
             <ul class="lessons-list" id="lessonsList">
-                <!-- Урок 2 ноября с пометкой "has-page" и ссылкой -->
                 <li class="lesson-item has-page" 
                     data-id="1" 
                     data-date="Monday, November 2, 2026"
@@ -353,8 +348,12 @@
                     <span class="lesson-title">1. Past Simple (2 Nov)</span>
                     <span class="lesson-status">To do</span>
                 </li>
-                <li class="lesson-item" data-id="2" data-date="" data-page="" data-desc="Phrasal verbs and vocabulary for daily routines, jogging, and healthy habits.">
-                    <span class="lesson-title">2. Healthy Lifestyle & Routines</span>
+                <li class="lesson-item has-page" 
+                    data-id="2" 
+                    data-date="Tuesday, November 3, 2026"
+                    data-page="lesson3.html"
+                    data-desc="Past Continuous Tense — прошедшее длительное время. Структура was/were + V-ing, сравнение с Past Simple, использование while и when.">
+                    <span class="lesson-title">2. Past Continuous (3 Nov)</span>
                     <span class="lesson-status">To do</span>
                 </li>
                 <li class="lesson-item" data-id="3" data-date="" data-page="" data-desc="Terms related to web development, algorithms, and writing clean code.">
@@ -383,9 +382,8 @@
                 <div class="day-header">Sa</div>
                 <div class="day-header">Su</div>
 
-                <!-- 2 ноября помечено как день с уроком -->
                 <div class="day-cell has-lesson" data-lesson="lesson2.html">2</div>
-                <div class="day-cell">3</div>
+                <div class="day-cell has-lesson" data-lesson="lesson3.html">3</div>
                 <div class="day-cell today">4</div>
                 <div class="day-cell">5</div>
                 <div class="day-cell">6</div>
@@ -434,7 +432,6 @@
             <h3 class="modal-title" id="modalTitle">Lesson Details</h3>
             <p class="modal-text" id="modalText">Description goes here...</p>
             <div class="modal-buttons">
-                <!-- Новая кнопка "Открыть урок" (появляется только если есть страница) -->
                 <a href="#" class="open-lesson-btn" id="openLessonBtn" style="display: none;">
                     📖 Open Lesson Page
                 </a>
@@ -455,7 +452,6 @@
         
         let currentLessonId = null;
 
-        // Открытие модального окна при клике на урок
         lessonsList.addEventListener('click', (e) => {
             const lessonItem = e.target.closest('.lesson-item');
             if (!lessonItem) return;
@@ -464,7 +460,6 @@
             const lessonDate = lessonItem.dataset.date;
             const lessonPage = lessonItem.dataset.page;
             
-            // Показываем дату, если она есть
             if (lessonDate) {
                 modalDate.textContent = '📅 ' + lessonDate;
                 modalDate.style.display = 'block';
@@ -475,7 +470,6 @@
             modalTitle.textContent = lessonItem.querySelector('.lesson-title').textContent;
             modalText.textContent = lessonItem.dataset.desc;
             
-            // Показываем/скрываем кнопку "Открыть урок"
             if (lessonPage) {
                 openLessonBtn.href = lessonPage;
                 openLessonBtn.style.display = 'block';
@@ -519,10 +513,8 @@
             modalOverlay.classList.remove('active');
         });
 
-        // Интерактивность календаря
         document.querySelectorAll('.day-cell:not(.empty)').forEach(cell => {
             cell.addEventListener('click', () => {
-                // Если у дня есть урок — переходим на него
                 if (cell.dataset.lesson) {
                     window.location.href = cell.dataset.lesson;
                     return;
