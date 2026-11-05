@@ -494,9 +494,16 @@
             📚 Open Cambridge Dictionary
         </a>
 
-        <button class="game-btn" onclick="alert('🎮 Game coming soon!')">
-            🎮 Play English Game
-        </button>
+      <button class="game-btn" onclick="startGame()">
+    🎮 Play English Game
+</button>
+
+<script>
+    function startGame() {
+        alert('🎮 Game coming soon!');
+        window.location.href = 'game.html'; // Переход на страницу
+    }
+</script>
     </div>
 
     <div id="lessonModal" class="modal">
