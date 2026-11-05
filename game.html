@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Word Cloud Game</title>
+    <style>
+        :root {
+            --primary: #9b59b6;       /* Purple */
+            --primary-hover: #8e44ad;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --dark: #4a4a4a;          /* Gray */
+            --light: #fdf2f8;         /* Light Pink */
+            --accent-pink: #f8bbd0;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #e8daef 100%);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.15);
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Streamlined, non-intrusive top interface */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .score-board {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--dark);
+            background: var(--light);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* Clearly visible and accessible close button */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--error);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 300;
+        }
+
+        .close-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .definition-box {
+            background: var(--light);
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            color: var(--dark);
+        }
+
+        .word-cloud {
+            width: 100%;
+            height: 400px;
+            border: 2px dashed var(--accent-pink);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background-color: #fafafa;
+            margin-bottom: 20px;
+        }
+
+        .word-item {
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, opacity 0.2s, background-color 0.3s;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            transform-origin: center center;
+            white-space: nowrap;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .word-item:hover {
+            transform: scale(1.15) !important;
+            z-index: 100;
+            background-color: var(--white);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .word-item.correct {
+            background-color: var(--success) !important;
+            color: white !important;
+            animation: pulse 0.5s infinite alternate;
+            z-index: 101;
+        }
+
+        .word-item.wrong {
+            background-color: var(--error) !important;
+            color: white !important;
+            z-index: 101;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        /* Overlay Screens */
+        .win-screen, .start-screen, .exit-screen {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .win-screen h2, .start-screen h2, .exit-screen h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(155, 89, 182, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            box-shadow: 0 4px 6px rgba(149, 165, 166, 0.3);
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        /* Ensures buttons never overlap */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="gameContainer">
+    <button class="close-btn" onclick="exitGame()" title="Close Game">✕</button>
+    
+    <div class="top-bar">
+        <h1>Clear the Word Cloud!</h1>
+        <div class="score-board">Score: <span id="score">0</span></div>
+    </div>
+    
+    <div class="definition-box" id="definition">Press "Start Game" to begin!</div>
+    
+    <div class="word-cloud" id="wordCloud"></div>
+
+    <!-- Start Screen -->
+    <div class="start-screen" id="startScreen" style="display: flex;">
+        <h2>Word Cloud Game</h2>
+        <p>Read the definition and click the correct word in the cloud.</p>
+        <button class="btn" onclick="startGame()">Start Game</button>
+    </div>
+
+    <!-- Win Screen -->
+    <div class="win-screen" id="winScreen">
+        <h2>Congratulations! 🎉</h2>
+        <p>You have successfully cleared the entire word cloud!</p>
+        <p>Your final score is: <span id="finalScore">0</span></p>
+        <div class="button-group">
+            <button class="btn" onclick="startGame()">Play Again</button>
+            <button class="btn btn-secondary" onclick="exitGame()">Exit</button>
+        </div>
+    </div>
+
+    <!-- Exit Screen -->
+    <div class="exit-screen" id="exitScreen">
+        <h2>Game Closed</h2>
+        <p>Thanks for playing!</p>
+        <button class="btn" onclick="startGame()">Play Again</button>
+    </div>
+</div>
+
+<script>
+    const originalDictionary = [
+        { word: 'against', def: 'To be touching something or standing in opposition to it.' },
+        { word: 'beach', def: 'A sandy or rocky area of land right next to the sea.' },
+        { word: 'damage', def: 'To break, harm, or spoil the condition of something.' },
+        { word: 'discover', def: 'To find something or learn about it for the very first time.' },
+        { word: 'emotion', def: 'A strong feeling that you experience, such as anger, sadness, or joy.' },
+        { word: 'fix', def: 'To repair a broken object and make it work again.' },
+        { word: 'frank', def: 'Being totally honest, direct, and telling the truth even if it is difficult.' },
+        { word: 'identify', def: 'To recognize someone or something and be able to say its correct name.' },
+        { word: 'island', def: 'A piece of land that is completely surrounded by water on all sides.' },
+        { word: 'ocean', def: 'The vast body of salt water that covers most of the Earth\'s surface.' },
+        { word: 'perhaps', def: 'An adverb used to express uncertainty or to say that something is possible; maybe.' },
+        { word: 'pleasant', def: 'Giving a sense of happy satisfaction, enjoyment, or a good feeling.' },
+        { word: 'prevent', def: 'To stop an action or event from happening before it actually occurs.' },
+        { word: 'rock', def: 'A hard, natural solid object made of stone found in the ground.' },
+        { word: 'save', def: 'To protect someone or something from danger, harm, or destruction.' },
+        { word: 'step', def: 'To move by lifting your foot and putting it down in another spot.' },
+        { word: 'still', def: 'Used to indicate that a situation continues to happen and has not changed.' },
+        { word: 'taste', def: 'The particular flavor you notice when food or drink is inside your mouth.' },
+        { word: 'throw', def: 'To use your hand and arm to propel an object quickly through the air.' },
+        { word: 'wave', def: 'A raised line or ridge of water moving across the surface of the sea.' }
+    ];
+
+    let gamePool = [];
+    let score = 0;
+    let currentItem = null;
+    
+    // High-contrast colors matching the purple/gray theme for readability
+    const colors = ['#8e44ad', '#9b59b6', '#6c3483', '#7f8c8d', '#5b2c6f', '#2c3e50', '#95a5a6', '#d35400'];
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startGame() {
+        score = 0;
+        const scoreEl = document.getElementById('score');
+        const winScreenEl = document.getElementById('winScreen');
+        const startScreenEl = document.getElementById('startScreen');
+        const exitScreenEl = document.getElementById('exitScreen');
+        const defEl = document.getElementById('definition');
+        
+        if (scoreEl) scoreEl.innerText = score;
+        if (winScreenEl) winScreenEl.style.display = 'none';
+        if (startScreenEl) startScreenEl.style.display = 'none';
+        if (exitScreenEl) exitScreenEl.style.display = 'none';
+        if (defEl) defEl.innerText = "Loading...";
+        
+        gamePool = [...originalDictionary];
+        shuffleArray(gamePool);
+        
+        initRound();
+    }
+
+    function exitGame() {
+        const winScreenEl = document.getElementById('winScreen');
+        const startScreenEl = document.getElementById('startScreen');
+        const exitScreenEl = document.getElementById('exitScreen');
+        const defEl = document.getElementById('definition');
+        const cloud = document.getElementById('wordCloud');
+        
+        if (winScreenEl) winScreenEl.style.display = 'none';
+        if (startScreenEl) startScreenEl.style.display = 'none';
+        if (exitScreenEl) exitScreenEl.style.display = 'flex';
+        if (defEl) defEl.innerText = "Game Closed";
+        if (cloud) {
+            cloud.innerHTML = '';
+            cloud.classList.add('disabled');
+        }
+    }
+
+    function initRound() {
+        const cloud = document.getElementById('wordCloud');
+        const defEl = document.getElementById('definition');
+        const winScreenEl = document.getElementById('winScreen');
+        const finalScoreEl = document.getElementById('finalScore');
+
+        if (!cloud || !defEl) return;
+
+        cloud.innerHTML = '';
+        cloud.classList.remove('disabled');
+
+        if (gamePool.length === 0) {
+            if (finalScoreEl) finalScoreEl.innerText = score;
+            if (winScreenEl) winScreenEl.style.display = 'flex';
+            defEl.innerText = "Game Over!";
+            return;
+        }
+
+        const correctIndex = Math.floor(Math.random() * gamePool.length);
+        currentItem = gamePool[correctIndex];
+        defEl.innerText = currentItem.def;
+
+        const cols = 5;
+
+        gamePool.forEach((item, index) => {
+            const span = document.createElement('span');
+            span.classList.add('word-item');
+            span.innerText = item.word;
+
+            const randomSize = Math.floor(Math.random() * (26 - 16 + 1)) + 16;
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomRotate = Math.floor(Math.random() * 20) - 10;
+
+            span.style.fontSize = `${randomSize}px`;
+            span.style.color = randomColor;
+
+            const cellX = index % cols;
+            const cellY = Math.floor(index / cols);
+
+            // Safe percentage positioning to prevent words from clipping at edges
+            const posX = (cellX * 18) + 4 + (Math.random() * 4);
+            const posY = (cellY * 20) + 5 + (Math.random() * 5);
+
+            span.style.left = `${posX}%`;
+            span.style.top = `${posY}%`;
+            span.style.transform = `rotate(${randomRotate}deg)`;
+
+            span.onclick = () => checkAnswer(span, item.word);
+            cloud.appendChild(span);
+        });
+    }
+
+    function checkAnswer(selectedElement, clickedWord) {
+        const cloud = document.getElementById('wordCloud');
+        const scoreEl = document.getElementById('score');
+        if (!cloud) return;
+
+        // Prevent multiple clicks during transition
+        if (cloud.classList.contains('disabled')) return;
+        cloud.classList.add('disabled');
+
+        if (clickedWord === currentItem.word) {
+            selectedElement.classList.add('correct');
+            score += 10;
+            if (scoreEl) scoreEl.innerText = score;
+        } else {
+            selectedElement.classList.add('wrong');
+            // Highlight the correct answer for learning
+            const items = cloud.getElementsByClassName('word-item');
+            for (let item of items) {
+                if (item.innerText === currentItem.word) {
+                    item.classList.add('correct');
+                }
+            }
+        }
+        
+        // Remove the current item from the pool to ensure game progression
+        gamePool = gamePool.filter(item => item.word !== currentItem.word);
+        
+        setTimeout(initRound, 1500);
+    }
+
+    // Safe initialization: waits for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        // Start screen is already visible via inline style, no auto-start needed
+    });
+</script>
+
+</body>
+</html>
